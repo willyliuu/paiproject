@@ -1,12 +1,12 @@
 [
     {
         "email": "anton@mail.com",
-        "password": "",
+        "password": "abcd1234",
         "isAdmin": true
     },
     {
         "email": "tomo@mail.com",
-        "password": "",
+        "password": "abcd1122",
         "isAdmin": false
     }
 ]
