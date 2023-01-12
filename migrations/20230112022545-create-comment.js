@@ -2,27 +2,29 @@
 /** @type {import('sequelize-cli').Migration} */
 module.exports = {
   up(queryInterface, Sequelize) {
-    return queryInterface.createTable('Profiles', {
+    return queryInterface.createTable('Comments', {
       id: {
         allowNull: false,
         autoIncrement: true,
         primaryKey: true,
         type: Sequelize.INTEGER
       },
-      fullName: {
+      comment: {
         type: Sequelize.STRING
       },
-      address: {
-        type: Sequelize.STRING
+      ProfileId: {
+        type: Sequelize.INTEGER,
+        references: {
+          model: 'Profiles',
+          key: 'id'
+        }
       },
-      dateOfBirth: {
-        type: Sequelize.DATE
-      },
-      UserId: {
-        type: Sequelize.INTEGER
-      },
-      img: {
-        type: Sequelize.STRING
+      PostId: {
+        type: Sequelize.INTEGER,
+        references: {
+          model: 'Posts',
+          key: 'id'
+        }
       },
       createdAt: {
         allowNull: false,
@@ -35,6 +37,6 @@ module.exports = {
     });
   },
   down(queryInterface, Sequelize) {
-    return queryInterface.dropTable('Profiles');
+    return queryInterface.dropTable('Comments');
   }
 };
