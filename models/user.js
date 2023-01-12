@@ -24,16 +24,24 @@ module.exports = (sequelize, DataTypes) => {
         },
         notEmpty:{
           msg:'Email Harus Diisi!'
-        }
+        } 
       },
       unique: {
-        args : true,
-        msg : 'pilih email yang lain'
+        args: true,
+        msg: 'Oops. Looks like you already have an account with this email address. Please try to login.',
       }
     },
     password: {
       type:DataTypes.STRING,
-      validate:{notEmpty:{msg:'Password Harus Diisi!'}}
+      validate:{
+        notEmpty:{
+          msg:'Password Harus Diisi!'
+        }, 
+        len: {
+          args: [8, 20],
+          msg : 'Password minimal 8 karakter'
+        }
+      }
     },
     isAdmin: DataTypes.BOOLEAN
   }, {
