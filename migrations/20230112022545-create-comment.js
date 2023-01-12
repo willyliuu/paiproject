@@ -24,7 +24,9 @@ module.exports = {
         references: {
           model: 'Posts',
           key: 'id'
-        }
+        },
+        onDelete: 'CASCADE',
+        onUpdate: 'CASCADE'
       },
       createdAt: {
         allowNull: false,

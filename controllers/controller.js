@@ -127,19 +127,25 @@ class Controller {
             }
         }
 
-        Profile.findOne({
-            where: {
-                id: ProfileId
-            },
-            include: User
-        })
+        let totalPost = null
+        Post.countAllPost()
+            .then((sumPost) => {
+                totalPost = sumPost[0].dataValues.totalPost
+                console.log(totalPost)
+                return Profile.findOne({
+                    where: {
+                        id: ProfileId
+                    },
+                    include: User
+                })
+            })
             .then((profileData) => {
                 oneProfileData = profileData
                 return Post.findAll(option)
             })
             .then((data) => {
                 // response.send(oneProfileData)
-                response.render("maintest", {data, oneProfileData, createdAtWithFormat})
+                response.render("maintest", {data, oneProfileData, createdAtWithFormat, totalPost})
             })
             .catch((err) => {
                 response.send(err)
@@ -169,19 +175,24 @@ class Controller {
             }
         }
 
-        Profile.findOne({
-            where: {
-                id: ProfileId
-            },
-            include: User
-        })
+        let totalPost = null
+        Post.countAllPost()
+            .then((sumPost) => {
+                totalPost = sumPost[0].dataValues.totalPost
+                return Profile.findOne({
+                    where: {
+                        id: ProfileId
+                    },
+                    include: User
+                })
+            })
             .then((profileData) => {
                 oneProfileData = profileData
                 return Post.findAll(option)
             })
             .then((data) => {
                 // response.send(oneProfileData)
-                response.render("maintest1", {data, oneProfileData, createdAtWithFormat})
+                response.render("maintest1", {data, oneProfileData, createdAtWithFormat, totalPost})
             })
             .catch((err) => {
                 response.send(err)
@@ -190,10 +201,11 @@ class Controller {
 
 
     static renderAddPostForm(request, response) {
+        const {errorMessage} = request.query
         const profileId = request.params.profileId
         Profile.findByPk(profileId)
         .then((profileData) => {
-            response.render("addPost", {profileData})
+            response.render("addPost", {profileData, errorMessage})
         })
         .catch((err) => {
             response.send(err)
@@ -208,7 +220,14 @@ class Controller {
             response.redirect(`/home/${ProfileId}`)
         })
         .catch((err) => {
-            response.send(err)
+            if (err.name === 'SequelizeValidationError') {
+                const errors = err.errors.map((el) => {
+                    return el.message
+                })
+                response.redirect(`/add/post/${ProfileId}?errorMessage=${errors.join(";")}`)
+            } else {
+                response.send(err)
+            }
         })
 }
 

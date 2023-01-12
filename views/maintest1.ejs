@@ -46,7 +46,12 @@
     </form>
     <!-- End of Search -->
 
-
+    <!-- Notification -->
+    <div class="alert alert-warning alert-dismissible fade show" role="alert">
+      <strong>Sekedar Info!</strong> Total Post yang ada disini ada sebanyak <%= totalPost %>.
+      <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+    <!-- End of Notification -->
 
     <div class="col-12 position-absolute top-25 ms-5 mt-5 d-flex flex-column justify-content-center align-item-center">
         <% data.forEach((el) => { %>
