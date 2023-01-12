@@ -15,6 +15,12 @@
         </i>
     </h1>
     <div style="text-align: center;" >
+        <% if(error) { %>
+            <p style="color: red;"><%= error %> </p>
+        <% } %> 
+        <% if(err) { %>
+            <p style="color: red;"><%= err %> </p>
+        <% } %> 
     <form action="" method="">
         <a href="/register"><button type="button" class="btn btn-link" style="color: red;">Register</button></a>
         <br><br>
