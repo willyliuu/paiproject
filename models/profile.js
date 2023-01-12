@@ -36,7 +36,12 @@ module.exports = (sequelize, DataTypes) => {
       }
     },
     UserId: DataTypes.INTEGER,
-    img: DataTypes.STRING,
+    img: {
+      type: DataTypes.STRING,
+      validate: {
+        notEmpty: {msg:'Profile picture is required!'}
+      }
+    }
   }, {
     sequelize,
     modelName: 'Profile',

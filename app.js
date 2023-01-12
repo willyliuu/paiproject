@@ -26,9 +26,18 @@ app.get('/login', Controller.getLogin)
 app.post('/login', Controller.postLogin)
 app.get('/logout', Controller.getLogout)
 
-
+app.use(function (req, res, next) {
+    // console.log(req.session.userId)
+    if(!req.session.userId){
+        const err = 'Harap Login terlebih dahulu'
+        res.redirect(`/?err=${err}`)
+    } else {
+        next()
+    }
+})
 
 app.get('/home/:profileId', Controller.dummy)
+app.get('/home/:profileId/?baruLogin=true', Controller.dummy)
 app.get('/add/post/:profileId', Controller.renderAddPostForm)
 app.post('/add/post/:profileId', Controller.addPost)
 

@@ -3,7 +3,8 @@ const bcrypt = require('bcryptjs')
 
 class Controller {
     static home(req, response) {
-        response.render('home')
+        const {error, err} = req.query
+        response.render('home', {error, err})
     }
     static register(req, response) {
         let errorss =[]
@@ -52,7 +53,7 @@ class Controller {
                 let errMes = err.errors.map(el=>{
                     return el.message
                 })
-                response.redirect(`/register?errors=${errMes}`)
+                response.redirect(`/register/profile/${id}?errors=${errMes}`)
             }else{
                 console.log(params);
                 response.send(err)
@@ -64,24 +65,15 @@ class Controller {
         response.render('login', {error, err})
     }
     static postLogin(req, response) {
-        // console.log('tes');
         const {email,password} = req.body
         User.findOne({where:{email}})
         .then(user => {
-            // console.log(User);
             if(user){
-                // console.log('tes <<<<<<');
-                // console.log(user);
                 const isValidPassword = bcrypt.compareSync(password, user.password)
-                // console.log(isValidPassword);
                 if(isValidPassword){
-                    console.log(req.session, 'atas');
-                    console.log('tesssssss');
                     req.session.userId = user.id
                     req.session.userIsAdmin = user.isAdmin
-                    console.log(req.session, 'bawah');
-                    // console.log('tes');
-                    return response.redirect(`/home/${user.id}`)
+                    return response.redirect(`/house/${user.id}`)
                 }else{
                     // console.log('tes');
                     const errors = 'Email or password wrong'
@@ -110,54 +102,55 @@ class Controller {
         })
     }
     
-     static dummy(request, response) {
+    static dummy(request, response) {
         const ProfileId = request.params.profileId
         let oneProfileData = null
 
         Profile.findByPk(ProfileId)
-            .then((profileData) => {
-                oneProfileData = profileData
-                return Post.findAll({
-                    include: [Profile, {
-                        model: Comment,
-                        include: Profile
-                    }],
-                    order: [
-                        ['id', 'DESC']
-                    ]
-                })
+        .then((profileData) => {
+            oneProfileData = profileData
+            return Post.findAll({
+                include: [Profile, {
+                    model: Comment,
+                    include: Profile
+                }],
+                order: [
+                    ['id', 'DESC']
+                ]
             })
-            .then((data) => {
-                // response.send(data)
-                response.render("maintest", {data, oneProfileData})
-            })
-            .catch((err) => {
-                response.send(err)
-            })
+        })
+        .then((data) => {
+            // response.send(data)
+            response.render("maintest", {data, oneProfileData})
+        })
+        .catch((err) => {
+            response.send(err)
+        })
     }
+
 
     static renderAddPostForm(request, response) {
         const profileId = request.params.profileId
         Profile.findByPk(profileId)
-            .then((profileData) => {
-                response.render("addPost", {profileData})
-            })
-            .catch((err) => {
-                response.send(err)
-            })
+        .then((profileData) => {
+            response.render("addPost", {profileData})
+        })
+        .catch((err) => {
+            response.send(err)
+        })
     }
 
     static addPost(request, response) {
         const ProfileId = request.params.profileId
         const {title, content, imgUrl} = request.body
         Post.create({title, content, imgUrl, ProfileId})
-            .then(() => {
-                response.redirect(`/home/${ProfileId}`)
-            })
-            .catch((err) => {
-                response.send(err)
-            })
-    }
+        .then(() => {
+            response.redirect(`/home/${ProfileId}`)
+        })
+        .catch((err) => {
+            response.send(err)
+        })
+}
 
     static renderEditPostForm(request, response) {
         const postId = request.params.postId
@@ -186,20 +179,20 @@ class Controller {
         const {title, content, imgUrl} = request.body
         let onePostData = null
         Post.findByPk(postId)
-            .then((postData) => {
-                onePostData = postData
-                return Post.update({title, content, imgUrl}, {
-                    where: {
-                        id: postId
-                    }
-                })
+        .then((postData) => {
+            onePostData = postData
+            return Post.update({title, content, imgUrl}, {
+                where: {
+                    id: postId
+                }
             })
-            .then(() => {
-                response.redirect(`/home/${onePostData.ProfileId}`)
-            })
-            .catch((err) => {
-                response.send(err)
-            })
+        })
+        .then(() => {
+            response.redirect(`/home/${onePostData.ProfileId}`)
+        })
+        .catch((err) => {
+            response.send(err)
+        })
     }
 
     static addComment(request, response) {
@@ -208,13 +201,13 @@ class Controller {
         const {comment} = request.body
 
         Comment.create({PostId, ProfileId, comment})
-            .then(() => {
-                response.redirect(`/home/${ProfileId}`)
-            })
-            .catch((err) => {
-                response.send(err)
-            })
-    }
+        .then(() => {
+            response.redirect(`/home/${ProfileId}`)
+        })
+        .catch((err) => {
+            response.send(err)
+        })
+}
     
 }
 

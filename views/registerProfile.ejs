@@ -7,6 +7,7 @@
     <title>Document</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
         integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+    <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 </head>
 <body>
     <h1 style="text-align: center;margin-top: 2%;">
@@ -31,10 +32,18 @@
             <br><br>
             <% if(errorss !== undefined){ %>
                 <% errorss.split(',').forEach(el=>{ %>
-                    <p style="color: red;"><%= el %></p>
+                    <script>
+                        Swal.fire({
+                          icon: 'error',
+                          title: 'ERROR',
+                          text: ` 
+                            <% errorss.split(',').forEach(el=>{ %>
+                                <%= el %>
+                            <% }); %>  `
+                        })
+                      </script>
                 <% }); %> 
             <% } %> 
-            <br>
             <input type="submit" class="btn btn-primary" value="Submit">
         </form>
     </div>
