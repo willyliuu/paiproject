@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+    <% data.forEach((el) => { %>
+        <div class="card">
+            <div class="profile-container">
+                <div>
+                    <img src="<%= el.Profile.img %>" alt="photo-profile" class="profile-photo">
+                </div>
+                <div><%= el.Profile.fullName %></div>
+            </div>
+            <div class="main-contain-container">
+                <div>
+                    <img src="<%= el.imgUrl %>" alt="content" class="main-contain-photo">
+                </div>
+                <div>
+                    <%= el.title %> <%= el.content %>
+                </div>
+            </div>
+            <div>
+                Commentar
+            </div>
+        </div>
+    <% }) %>
+</body>
+</html>

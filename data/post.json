@@ -3,18 +3,18 @@
         "title": "The View",
         "content": "Nature view is the best view that i see",
         "imgUrl": "https://cf.ltkcdn.net/family/images/std/200821-800x533r1-family.jpg",
-        "ProfileId": 1
+        "ProfileId": 3
     },
     {
         "title": "Family",
         "content": "Potret bersama keluarga",
         "imgUrl": "https://cf.ltkcdn.net/family/images/std/200821-800x533r1-family.jpg",
-        "ProfileId": 1
+        "ProfileId": 3
     },
     {
         "title": "My Cat",
         "content": "Perkenalka ini kucingku, he is a boy, his name is Dajal",
         "imgUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSkttTCjXRUlJztOQwXdDuZpCc9W7mxGfxQkg&usqp=CAU",
-        "ProfileId": 2
+        "ProfileId": 4
     }
 ]
