@@ -28,7 +28,12 @@ class Controller {
                     return el.message
                 })
                 response.redirect(`/register?errors=${errMes}`)
-            }else{
+            }else if(err.name === "SequelizeUniqueConstraintError") {
+                let pesanError = err.errors.map(el => {
+                    return el.message
+                })
+                response.redirect(`/register?errors=${pesanError}`)
+            } else {
                 response.send(err)
             }
         })

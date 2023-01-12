@@ -18,11 +18,30 @@ module.exports = (sequelize, DataTypes) => {
   User.init({
     email: {
       type:DataTypes.STRING,
-      validate:{isEmail:{msg:'format email tidak valid!'},notEmpty:{msg:'Email Harus Diisi!'}}
+      validate:{
+        isEmail:{
+          msg:'format email tidak valid!'
+        },
+        notEmpty:{
+          msg:'Email Harus Diisi!'
+        } 
+      },
+      unique: {
+        args: true,
+        msg: 'Oops. Looks like you already have an account with this email address. Please try to login.',
+      }
     },
     password: {
       type:DataTypes.STRING,
-      validate:{notEmpty:{msg:'Password Harus Diisi!'}}
+      validate:{
+        notEmpty:{
+          msg:'Password Harus Diisi!'
+        }, 
+        len: {
+          args: [8, 20],
+          msg : 'Password minimal 8 karakter'
+        }
+      }
     },
     isAdmin: DataTypes.BOOLEAN
   }, {
