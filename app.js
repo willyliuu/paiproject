@@ -26,6 +26,7 @@ app.get('/login', Controller.getLogin)
 app.post('/login', Controller.postLogin)
 app.get('/logout', Controller.getLogout)
 
+
 app.use(function (req, res, next) {
     // console.log(req.session.userId)
     if(!req.session.userId){
@@ -36,6 +37,8 @@ app.use(function (req, res, next) {
     }
 })
 
+
+app.get('/house/:profileId', Controller.dummy1)
 app.get('/home/:profileId', Controller.dummy)
 app.get('/home/:profileId/?baruLogin=true', Controller.dummy)
 app.get('/add/post/:profileId', Controller.renderAddPostForm)
@@ -45,6 +48,8 @@ app.get('/edit/post/:postId', Controller.renderEditPostForm)
 app.post('/edit/post/:postId', Controller.editPost)
 
 app.post('/add/comment/post/:postId/profile/:profileId', Controller.addComment)
+
+app.get('/delete/post/:postId', Controller.deletePost)
 
 
 app.listen(port, () => {

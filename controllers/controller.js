@@ -1,5 +1,7 @@
 const {Post, Comment, Profile, User} = require('../models/index')
 const bcrypt = require('bcryptjs')
+const { Op } = require('sequelize')
+const createdAtWithFormat = require('../helper/helper')
 
 class Controller {
     static home(req, response) {
@@ -106,26 +108,84 @@ class Controller {
         const ProfileId = request.params.profileId
         let oneProfileData = null
 
-        Profile.findByPk(ProfileId)
-        .then((profileData) => {
-            oneProfileData = profileData
-            return Post.findAll({
-                include: [Profile, {
-                    model: Comment,
-                    include: Profile
-                }],
-                order: [
-                    ['id', 'DESC']
-                ]
+        const {searchTitle} = request.query
+
+        let option = {
+            include: [Profile, {
+                model: Comment,
+                include: Profile
+            }],
+            order: [
+                ['id', 'DESC']
+            ],
+            where: {}
+        }
+
+        if (searchTitle) {
+            option.where.title = {
+                [Op.iLike]: `%${searchTitle}%`
+            }
+        }
+
+        Profile.findOne({
+            where: {
+                id: ProfileId
+            },
+            include: User
+        })
+            .then((profileData) => {
+                oneProfileData = profileData
+                return Post.findAll(option)
             })
+            .then((data) => {
+                // response.send(oneProfileData)
+                response.render("maintest", {data, oneProfileData, createdAtWithFormat})
+            })
+            .catch((err) => {
+                response.send(err)
+            })
+    }
+
+    static dummy1(request, response) {
+        const ProfileId = request.params.profileId
+        let oneProfileData = null
+
+        const {searchTitle} = request.query
+
+        let option = {
+            include: [Profile, {
+                model: Comment,
+                include: Profile
+            }],
+            order: [
+                ['id', 'DESC']
+            ],
+            where: {}
+        }
+
+        if (searchTitle) {
+            option.where.title = {
+                [Op.iLike]: `%${searchTitle}%`
+            }
+        }
+
+        Profile.findOne({
+            where: {
+                id: ProfileId
+            },
+            include: User
         })
-        .then((data) => {
-            // response.send(data)
-            response.render("maintest", {data, oneProfileData})
-        })
-        .catch((err) => {
-            response.send(err)
-        })
+            .then((profileData) => {
+                oneProfileData = profileData
+                return Post.findAll(option)
+            })
+            .then((data) => {
+                // response.send(oneProfileData)
+                response.render("maintest1", {data, oneProfileData, createdAtWithFormat})
+            })
+            .catch((err) => {
+                response.send(err)
+            })
     }
 
 
@@ -201,13 +261,44 @@ class Controller {
         const {comment} = request.body
 
         Comment.create({PostId, ProfileId, comment})
-        .then(() => {
-            response.redirect(`/home/${ProfileId}`)
+            .then(() => {
+                response.redirect(`/home/${ProfileId}`)
+            })
+            .catch((err) => {
+                response.send(err)
+            })
+    }
+
+
+    static deletePost(request, response) {
+        const postId = request.params.postId
+        let soonDeletedPost = null
+        Post.findOne({
+            where: {
+                id: postId
+            }
         })
-        .catch((err) => {
-            response.send(err)
-        })
-}
+            .then((data) => {
+                soonDeletedPost = data.ProfileId
+                console.log(soonDeletedPost, postId, ">>>>")
+                return Post.destroy({
+                    where: {
+                        id: postId
+                    }
+                })
+
+            })
+            .then(() => {
+                response.redirect(`/home/${soonDeletedPost}`)
+            })
+            .catch((err) => {
+                console.log(err, "<<<<<<<")
+                response.send(err)
+            })
+    }
+
+    
+
     
 }
 
