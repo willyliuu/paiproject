@@ -25,7 +25,6 @@
             <input type="password" autocomplete="off" name="password">
             <br><br> 
             <% if(errorss !== undefined){ %>
-                <% errorss.split(',').forEach(el=>{ %>
                     <script>
                         Swal.fire({
                           icon: 'error',
@@ -35,8 +34,7 @@
                                 <%= el %>
                             <% }); %>  `
                         })
-                      </script>
-                <% }); %> 
+                    </script> 
             <% } %> 
             <br>
             <input type="submit" class="btn btn-primary" value="Submit">

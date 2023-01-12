@@ -15,6 +15,10 @@ module.exports = (sequelize, DataTypes) => {
       Profile.hasMany(models.Comment)
       Profile.hasMany(models.Post)
     }
+    setGreeting(){
+      let greeting = `Hello ${this.fullName}! Enjoy!`
+      return greeting
+    }
   }
   Profile.init({
     fullName: {
