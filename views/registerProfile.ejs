@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+</head>
+<body>
+    <h1 style="text-align: center;margin-top: 2%;">
+        <i>
+            Add Your Profile
+        </i>
+    </h1>
+    <div style="text-align: center;">
+        <form action="/register/profile/<%= id %>" method="post">
+            <br><br>
+            <label for="fullName">Fullname</label><br>
+            <input type="text" autocomplete="off" name="fullName">
+            <br><br>
+            <label for="dateOfBirth">Tanggal Lahir</label><br>
+            <input type="date" autocomplete="off" name="dateOfBirth">
+            <br><br>
+            <label for="address">Alamat</label><br>
+            <input type="text" autocomplete="off" name="address">
+            <br><br>
+            <label for="img">Photo Profile</label><br>
+            <input type="text" autocomplete="off" name="img">
+            <br><br>
+            <% if(errorss !== undefined){ %>
+                <% errorss.split(',').forEach(el=>{ %>
+                    <p style="color: red;"><%= el %></p>
+                <% }); %> 
+            <% } %> 
+            <br>
+            <input type="submit" class="btn btn-primary" value="Submit">
+        </form>
+    </div>
+</body>
+
+
+
+</html>
