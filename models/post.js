@@ -14,11 +14,44 @@ module.exports = (sequelize, DataTypes) => {
       Post.hasMany(models.Comment)
       Post.belongsTo(models.Profile)
     }
+
+    static countAllPost() {
+      return Post.findAll({
+        attributes: [
+          [sequelize.fn('count', sequelize.col('id')), 'totalPost']
+        ]
+      })
+    }
   }
   Post.init({
-    title: DataTypes.STRING,
-    content: DataTypes.STRING,
-    imgUrl: DataTypes.STRING,
+    title: {
+      type: DataTypes.STRING,
+      allowNull: false,
+      validate: {
+        notEmpty: {
+          msg: 'title must not empty! '
+        }
+      }
+    },
+
+    content:  {
+      type: DataTypes.STRING,
+      allowNull: false,
+      validate: {
+        notEmpty: {
+          msg: 'content must not empty! '
+        }
+      }
+    },
+    imgUrl:  {
+      type: DataTypes.STRING,
+      allowNull: false,
+      validate: {
+        notEmpty: {
+          msg: 'image must not empty! '
+        }
+      }
+    },
     ProfileId: DataTypes.INTEGER
   }, {
     sequelize,
