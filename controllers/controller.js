@@ -118,6 +118,9 @@ class Controller {
         let option = {
             include: [Profile, {
                 model: Comment,
+                order: [
+                    ['id', 'ASC']
+                ],
                 include: Profile
             }],
             order: [
@@ -166,6 +169,9 @@ class Controller {
         let option = {
             include: [Profile, {
                 model: Comment,
+                order: [
+                    ['id', 'ASC']
+                ],
                 include: Profile
             }],
             order: [
